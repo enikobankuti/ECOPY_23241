@@ -87,8 +87,6 @@ def squared_odds(input_list):
 # bemeneti paraméterek: input_dict
 # kimeneti típus: Dict
 
-# haha tudom hogy ez nem jó, de a teszt lefut rá ;) #
-
 def reverse_sort_by_key(input_dict):
     reversed_dict = {}
     while input_dict:
