@@ -309,8 +309,11 @@ def merge_two_dicts(input_dict1, input_dict2):
 # bemeneti paraméterek: *dicts
 # kimeneti típus: Dict
 
-def merge_dicts(*dicts):  # ?????????????????????????????????????????
-    return dicts
+def merge_dicts(*dicts):
+    result = dict()
+    for d in dicts:
+        result.update(d)
+    return result
 
 
 # 9., Írjon egy függvényt amely a bemeneti, pozitív egész számokat tartalmazó listát kiválogatja páros és páratlan számokra, és visszaad egy olyan dictionary-t, amelyben a kulcs az 'even' és 'odd', az értékek, pedig a listák.
