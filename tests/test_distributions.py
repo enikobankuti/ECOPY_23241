@@ -105,7 +105,7 @@ def test_uniform_distribution_gen_random():
     # Act
     dist = dst.UniformDistribution(rand_gen, lower_bound, upper_bound)
     dist.rand.seed(42)
-    result = [dist.gen_rand() for _ in range(104)]
+    result = [dist.gen_random() for _ in range(104)]
 
     # Assert
     assert result == approx(expected)
@@ -227,7 +227,7 @@ def test_normal_distribution_gen_random():
     # Act
     dist = dst.NormalDistribution(rand_gen, expected_value, variance)
     dist.rand.seed(42)
-    result = [dist.gen_rand() for _ in range(104)]
+    result = [dist.gen_random() for _ in range(104)]
 
     # Assert
     assert result == approx(expected)
