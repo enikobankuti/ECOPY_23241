@@ -33,8 +33,9 @@ kimeneti típus: pandas.core.frame.DataFrame
 
 # %%
 def change_price_to_float(input_df):
-    food['item_price'] = food['item_price'].str.replace('$', '').astype(float)
-    return food
+    input_df['item_price'] = input_df['item_price'].str.replace('$', '').astype(float)
+    return input_df
+
 
 
 # ezt itt nem értem, miért nem jó, a notebookban lefut jól..
