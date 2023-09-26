@@ -10,6 +10,7 @@ def evens_from_list(input_list):
             e.append(i)
     return e
 
+
 #
 # 2., Írjon egy függvényt ami megvizsgálja, hogy a listában minden elem páratlan-e
 # függvény név: every_element_is_odd
@@ -30,6 +31,7 @@ def every_element_is_odd(input_list):
 
 def kth_largest_in_list(input_list, kth_largest):
     return sorted(input_list)[kth_largest]
+
 
 # 4., Írjon egy függvényt ami kiszámítja a lista elemek gördülő átlagát
 # függvény név: cumavg_list
@@ -87,11 +89,19 @@ def squared_odds(input_list):
 # bemeneti paraméterek: input_dict
 # kimeneti típus: Dict
 
-def reverse_sort_by_key(input_dict):
+def reverse_sort_by_key_old(input_dict):
     reversed_dict = {}
     while input_dict:
         key, value = input_dict.popitem()
         reversed_dict[key] = value
+    return reversed_dict
+
+
+def reverse_sort_by_key(input_dict):
+    keys = reversed(sorted(input_dict))
+    reversed_dict = {}
+    for i in keys:
+        reversed_dict[i] = input_dict[i]
     return reversed_dict
 
 
