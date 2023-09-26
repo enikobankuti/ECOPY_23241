@@ -8,6 +8,7 @@
 
 import random
 import math
+from pyerf import pyerf
 
 
 class FirstClass:
@@ -202,7 +203,6 @@ amely értékeket adattagokba ment le.
     bemenet: self, rand, loc, scale
 """
 
-from pyerf import pyerf
 class NormalDistribution:
     def __init__(self, rand, loc, scale):
         self.rand = rand
@@ -220,8 +220,8 @@ class NormalDistribution:
         return self.loc + self.scale ** 0.5 * (2 ** 0.5) * pyerf.erfinv(2 * p - 1)
 
     def gen_random(self):
-        return random.normalvariate(self.loc, self.scale)
-###    ezt sem értem  ?????????????????????????????????????????????????????????????????????????
+        return self.ppf(self.rand.random())
+
     def mean(self):
         return self.loc
 
@@ -238,8 +238,10 @@ class NormalDistribution:
         return 0
 
     def mvsk(self):
-        l = []
+        l = [self.mean(), self.variance(), self.skewness(), self.ex_kurtosis()]
         return l
+
+
 """
 15., Egészítse ki a NormalDistribution osztályt egy új függvénnyel, amely loc várható értékű és scale varianciájú
 normális eloszlás eloszlásfüggvényéből rendel valószínűségi értéket a bemeneti x valós számhoz.
@@ -314,11 +316,45 @@ normális eloszlás eloszlásfüggvényéből rendel valószínűségi értéket
     kimeneti típus: List
     link: https://en.wikipedia.org/wiki/Normal_distribution
 """
-# %%
 
-# %%
 
-# %%
+class CauchyDistribution:
+    def __init__(self, rand, x0, gamma):
+        self.rand = rand
+        self.loc = x0
+        self.scale = gamma
+
+    def pdf(self, x):
+        return 1 / (math.pi * self.scale * (1 + ((x - self.loc) / self.scale) ** 2))
+
+    def cdf(self, x):
+        return 0.5 + (1 / math.pi) * math.atan((x - self.loc) / self.scale)
+
+    def ppf(self, p):
+        return self.loc + self.scale * math.tan(math.pi * (p - 0.5))
+
+    def gen_rand(self):
+        return self.loc + self.scale * math.tan(math.pi * (self.rand.random() - 0.5))
+
+    def mean(self):
+        raise Exception("Moment undefined")
+
+    def median(self):
+        return self.loc
+
+    def variance(self):
+        raise Exception("Moment undefined")
+
+    def skewness(self):
+        raise Exception("Moment undefined")
+
+    def ex_kurtosis(self):
+        raise Exception("Moment undefined")
+
+    def mvsk(self):
+        raise Exception("Moments undefined")
+
+
 """
 25., Hozzan létre egy új osztályt aminek a neve CauchyDistribution. Definiáljon benne a __init__ nevű függvényt, amelynek bemenetként kap egy véletlenszám generátort, az x0 (location) és gamma (scale) értékeket, amelyeket adattagokba ment le.
     Osztály név: CauchyDistribution

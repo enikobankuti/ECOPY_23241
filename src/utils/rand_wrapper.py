@@ -146,6 +146,5 @@ def random_reorder(input_list):
 
 
 def uniform_one_to_five():
-    return random.uniform(1, 5)
+    return random.uniform(1, 6)
 
-# ????? nem értem ????
