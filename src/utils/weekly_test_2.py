@@ -122,7 +122,7 @@ class ParetoDistribution:
             return 1 - (self.scale / x) ** self.shape
 
     def ppf(self, p):
-        return 0
+        return self.scale * (1 - p) ** (-1 / self.shape)
 
 
     def gen_random(self):
