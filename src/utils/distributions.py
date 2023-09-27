@@ -95,7 +95,7 @@ class UniformDistribution:
     def cdf(self, x):
         if x < self.a:
             cdf = 0.0
-        elif x >= self.b:
+        elif x > self.b:
             cdf = 1.0
         else:
             cdf = (x - self.a) / (self.b - self.a)
@@ -217,7 +217,10 @@ class NormalDistribution:
         return (1.0 + math.erf((x - self.loc) / (self.scale ** 0.5 * (2 ** 0.5)))) / 2.0
 
     def ppf(self, p):
-        return self.loc + self.scale ** 0.5 * (2 ** 0.5) * pyerf.erfinv(2 * p - 1)
+        if p < 0.0 or p > 1.0:
+            raise ValueError("Percentile p must be between 0 and 1.")
+        else:
+            return self.loc + self.scale ** 0.5 * (2 ** 0.5) * pyerf.erfinv(2 * p - 1)
 
     def gen_random(self):
         return self.ppf(self.rand.random())
@@ -331,7 +334,10 @@ class CauchyDistribution:
         return 0.5 + (1 / math.pi) * math.atan((x - self.loc) / self.scale)
 
     def ppf(self, p):
-        return self.loc + self.scale * math.tan(math.pi * (p - 0.5))
+        if p < 0.0 or p > 1.0:
+            raise ValueError("Percentile p must be between 0 and 1.")
+        else:
+            return self.loc + self.scale * math.tan(math.pi * (p - 0.5))
 
     def gen_rand(self):
         return self.loc + self.scale * math.tan(math.pi * (self.rand.random() - 0.5))
