@@ -20,19 +20,19 @@ class LaplaceDistribution:
         self.scale = scale
 
     def pdf(self, x):
-        pdf = 1/(2 * self.scale) * math.exp(-(abs(x-self.loc)/self.scale))
+        pdf = 1 / (2 * self.scale) * math.exp(-(abs(x - self.loc) / self.scale))
         return pdf
 
     def cdf(self, x):
         if x < self.loc:
-            return 0.5 * math.exp((x-self.loc)/self.scale)
+            return 0.5 * math.exp((x - self.loc) / self.scale)
         else:
-            return 1-0.5 * math.exp(-(x-self.loc)/self.scale)
+            return 1 - 0.5 * math.exp(-(x - self.loc) / self.scale)
 
     def ppf(self, p):
-        return self.loc - self.scale * helper.sign(p-0.5) * math.log(1-2*abs(p-0.5))
+        return self.loc - self.scale * helper.sign(p - 0.5) * math.log(1 - 2 * abs(p - 0.5))
 
-    def gen_random(self):
+    def gen_rand(self):
         return self.ppf(self.rand.random())
 
     def mean(self):
@@ -102,7 +102,6 @@ aszimmetrikus laplace eloszlású véletlen számokat generál minden meghívás
 """
 
 
-
 class ParetoDistribution:
     def __init__(self, rand, scale, shape):
         self.rand = rand
@@ -124,9 +123,8 @@ class ParetoDistribution:
     def ppf(self, p):
         return self.scale * (1 - p) ** (-1 / self.shape)
 
-
-    def gen_random(self):
-        return 1
+    def gen_rand(self):
+        return self.ppf(self.rand.random())
 
     def mean(self):
         if self.shape <= 1:
@@ -134,35 +132,30 @@ class ParetoDistribution:
         else:
             return (self.shape * self.scale) / (self.shape - 1)
 
-
     def variance(self):
         if self.shape <= 2:
             return float('inf')
         else:
             return (self.scale ** 2 * self.shape) / ((self.shape - 1) ** 2 * (self.shape - 2))
 
-
     def skewness(self):
         if self.shape > 3:
-            return (2 * (1 + self.shape))/(self.shape - 3) * math.sqrt((self.shape - 2)/self.shape)
-        else:
+            return (2 * (1 + self.shape)) / (self.shape - 3) * math.sqrt((self.shape - 2) / self.shape)
+        elif self.shape <= 1:
             raise Exception("Moment undefined")
+        else:
+            return math.inf
 
     def ex_kurtosis(self):
         if self.shape > 4:
             return (6 * ((self.shape ** 3) + (self.shape ** 2) - (6 * self.shape) - 2)) / (self.shape * (self.shape-3) * (self.shape - 4))
-        else:
+        elif self.shape <= 1:
             raise Exception("Moment undefined")
+        else:
+            return math.inf
 
     def mvsk(self):
         return [self.mean(), self.variance(), self.skewness(), self.ex_kurtosis()]
-
-
-
-
-
-
-
 
 
 """
