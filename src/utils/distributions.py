@@ -569,7 +569,6 @@ class ChiSquaredDistribution:
     def gen_rand(self):
         return self.ppf(self.rand.random())
 
-
     def mean(self):
         return self.dof
 
