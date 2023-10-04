@@ -556,7 +556,7 @@ class ChiSquaredDistribution:
 
     def pdf(self, x):
         if x > 0:
-            return (1 / (2**(self.dof/2) * sc.gamma(self.dof/2))) * (x**(self.dof/2 - 1)) * math.exp(-x/2)
+            return (1 / (2 ** (self.dof/2) * sc.gamma(self.dof/2))) * (x ** (self.dof/2 - 1)) * math.exp(-x/2)
         else:
             return 0
 
