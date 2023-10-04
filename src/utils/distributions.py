@@ -555,7 +555,10 @@ class ChiSquaredDistribution:
         self.dof = dof
 
     def pdf(self, x):
-        return (1 / (2**(self.dof/2) * sc.gamma(self.dof/2))) * (x**(self.dof/2 - 1)) * math.exp(-x/2)
+        if x > 0:
+            return (1 / (2**(self.dof/2) * sc.gamma(self.dof/2))) * (x**(self.dof/2 - 1)) * math.exp(-x/2)
+        else:
+            return 0
 
     def cdf(self, x):
         return sc.gammainc(self.dof/2, x/2)
