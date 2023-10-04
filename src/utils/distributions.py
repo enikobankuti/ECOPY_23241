@@ -107,7 +107,7 @@ class UniformDistribution:
         ppf = self.a + p * (self.b - self.a)
         return ppf
 
-    def gen_random(self):
+    def gen_rand(self):
         return random.uniform(self.a, self.b)
 
     def mean(self):
@@ -223,7 +223,7 @@ class NormalDistribution:
         else:
             return self.loc + self.scale ** 0.5 * (2 ** 0.5) * pyerf.erfinv(2 * p - 1)
 
-    def gen_random(self):
+    def gen_rand(self):
         return self.ppf(self.rand.random())
 
     def mean(self):
@@ -555,10 +555,35 @@ class ChiSquaredDistribution:
         self.dof = dof
 
     def pdf(self, x):
-        return (1 / (2 ** (x / 2 - 1) * sc.gamma(x / 2))) * math.exp(-x / 2)
+        return (1 / (2**(self.dof/2) * sc.gamma(self.dof/2))) * (x**(self.dof/2 - 1)) * math.exp(-x/2)
 
     def cdf(self, x):
-        return sc.gammainc(x/2, x/2)
+        return sc.gammainc(self.dof/2, x/2)
+
+    def ppf(self, p):
+        return 2 * sc.gammaincinv(self.dof / 2, p)
+
+    def gen_rand(self):
+        return self.ppf(self.rand.random())
+
+
+    def mean(self):
+        return self.dof
+
+    def variance(self):
+        return self.dof * 2
+
+    def skewness(self):
+        return math.sqrt(8/self.dof)
+
+    def ex_kurtosis(self):
+        return 12/self.dof
+
+    def mvsk(self):
+        l = [self.mean(), self.variance(), self.skewness(), self.ex_kurtosis()]
+        return l
+
+
 
 """
 11., Hozzan létre egy új osztályt aminek a neve ChiSquaredDistribution. Definiáljon benne a __init__ nevű függvényt, amelynek bemenetként kap egy véletlenszám generátort, és egy szabadságfok (dof) paramétert, amely értékeket adattagokba ment le.
