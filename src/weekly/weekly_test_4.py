@@ -125,7 +125,7 @@ kimeneti típus: pandas.core.frame.DataFrame
 def countries_starting_with_g(input_df):
     new_df = input_df.copy()
     new_df = input_df[(input_df['Team'].str.startswith('G'))]
-    return new_df[['Team']]
+    return new_df['Team']
 
 
 # %%
@@ -179,11 +179,12 @@ return type: pandas.core.frame.DataFrame
 
 # %%
 def sliced_view(input_df, columns_to_keep, column_to_filter, rows_to_keep):
+    new_df = input_df[columns_to_keep]
+    new_df = new_df[new_df[column_to_filter].isin(rows_to_keep)]
 
-    return
-# %%
+    return new_df
 
-# %%
+
 """
 11. Készíts egy függvényt, ami a bemeneti adatokat kiegészíti egy 'Quartile' oszloppal. A kvartilis oszlop értékeit a lőtt gólok alapján határozza meg:
 
@@ -200,7 +201,7 @@ return type: pandas.core.frame.DataFrame
 
 
 # %%
-def generate_quartile(input_df):
+def generate_quarters(input_df):
     new_df = input_df.copy()
 
     def conditions(s):
@@ -231,8 +232,8 @@ return type: pandas.core.frame.DataFrame
 
 # %%
 def average_yellow_in_quartiles(input_df):
-    new_df = generate_quartile(input_df)
-    new_df = new_df.groupby('Quartile')['Passes'].mean().reset_index()
+    new_df = generate_quarters(input_df)
+    new_df = new_df.groupby('Quartile')['Passes'].mean().reset_index(drop=True)
     return new_df
 
 
@@ -250,9 +251,10 @@ return type: pandas.core.frame.DataFrame
 
 # %%
 def minmax_block_in_quartile(input_df):
-    new_df = generate_quartile(input_df)
+    new_df = generate_quarters(input_df)
     new_df = new_df.groupby('Quartile')
     return new_df['Blocks'].agg(['min', 'max'])
+
 
 # %%
 
@@ -271,7 +273,6 @@ return type: matplotlib.figure.Figure
 """
 
 
-
 def scatter_goals_shots(input_df):
     fig, ax = plt.subplots()
     ax.scatter(x=input_df['Goals'], y=input_df['Shots on target'])
@@ -281,7 +282,6 @@ def scatter_goals_shots(input_df):
     ax.set_title('Goals and Shot on target')
 
     return fig
-
 
 
 """
@@ -301,9 +301,10 @@ return type: matplotlib.figure.Figure
 
 # %%
 def scatter_goals_shots_by_quartile(input_df):
+    new_df = generate_quarters(input_df)
     fig, ax = plt.subplots()
 
-    ax.scatter(x=input_df['Goals'], y=input_df['Shots on target'])
+    ax.scatter(x=new_df['Goals'], y=new_df['Shots on target'], c=new_df["Quartile"], label=new_df["Quartile"])
 
     ax.set_xlabel('Goals')
     ax.set_ylabel('Shot on target')
@@ -326,5 +327,23 @@ kimeneti típus: List
 függvény neve: gen_pareto_mean_trajectories
 """
 # %%
+from tests.utils import test_distributions as dist
+from src.weekly import weekly_test_1 as w1
+from src.weekly import weekly_test_2 as w2
+
+
+def gen_pareto_mean_trajectories(pareto_distribution: w2.ParetoDistribution, number_of_trajectories,
+                                 length_of_trajectory):
+    l = []
+    pareto_distribution.rand.seed(42)
+
+    for i in range(0, number_of_trajectories):
+        rand_num = []
+        for j in range(0, length_of_trajectory):
+            rand_num.append(pareto_distribution.gen_rand())
+        l.append(w1.cumavg_list(rand_num))
+    return l
+
+
 
 # %%
