@@ -158,7 +158,7 @@ return típus: pandas.core.frame.DataFrame
 
 """
 # %%
-food
+
 
 
 # %%
@@ -167,8 +167,7 @@ def first_three_columns(input_df):
 
 
 # %%
-first_three_columns(food)
-# %%
+
 """
 10. Készíts egy függvényt, ami visszaadja az összes oszlopot az utolsó 2-on kívül. Használd a tisztított adatokat.
 
@@ -185,8 +184,7 @@ def every_column_except_last_two(input_df):
 
 
 # %%
-every_column_except_last_two(food)
-# %%
+
 """
 11. Készíts egy függvényt, amely tetszőleges oszlopokat és sorokat ad vissza a bemeneti adatokból. A sorokat és oszlopokat listák formájában adjuk be a függvénynek. A sorokat egy bemeneti oszlop alapján szűrjük.
 
@@ -204,9 +202,7 @@ def sliced_view(input_df, columns_to_keep, column_to_filter, rows_to_keep):
     return new_df
 
 
-# %%
-sliced_view(food, ['item_name', 'item_price'], 'item_name', ['Chicken Bowl'])
-# %%
+
 """
 12. Készíts egy függvényt, ami a bemeneti adatokat kiegészíti egy 'Quartile' oszloppal. Használd a tisztított adatokat. A kvartilis oszlop értékeit az ár alapján határozza meg:
 
@@ -240,9 +236,7 @@ def generate_quartile(input_df):
     return new_df
 
 
-# %%
-generate_quartile(food)
-# %%
+
 """
 13., Készíts egy függvényt, ami minden kvartilis értékhez kiszámítja, az átlagos árat. Használd az előző feladat eredményét bemenetként.
 
@@ -260,9 +254,7 @@ def average_price_in_quartiles(input_df):
     return new_df
 
 
-# %%
-average_price_in_quartiles(food)
-# %%
+
 """
 14., Készíts egy függvényt ami minden kvartilis esetén visszadja az árak minimális és maximális értékét, valamint az átlagát.
 
@@ -282,8 +274,6 @@ def minmaxmean_price_in_quartile(input_df):
     return new_df2
 
 
-# %%
-minmaxmean_price_in_quartile(food)
 # %%
 """
 15. Készíts egy függvényt, ami létrehoz egy listát, benne number_of_trajectories db listával. A belső listák létrehozásának logikája a következő:
@@ -315,7 +305,7 @@ def gen_uniform_mean_trajectories(distribution: dist.UniformDistribution, number
 
 
 # %%
-gen_uniform_mean_trajectories(dist.UniformDistribution(rand, 0, 1), 5, 2)
+
 # %%
 """
 16. Készíts egy függvényt, ami létrehoz egy listát, benne number_of_trajectories db listával. A belső listák létrehozásának logikája a következő:
