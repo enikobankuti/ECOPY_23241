@@ -11,7 +11,8 @@ import matplotlib.pyplot as plt
 
 # %%
 """
-1., Olvasd be a data mappa Euro_2012_stats_TEAM.csv nevű fájlját egy dataframe-be. A betöltött adatokat az euro12 alatt tárolja. A következő feladatokban a kiinduló fájlt ne írd felül.
+1., Olvasd be a data mappa Euro_2012_stats_TEAM.csv nevű fájlját egy dataframe-be. A betöltött adatokat az euro12 alatt tárolja. 
+A következő feladatokban a kiinduló fájlt ne írd felül.
 """
 # %%
 df_data = pd.read_csv('/Users/Enci/Documents/GitHub/ECOPY_23241/data/Euro_2012_stats_TEAM.csv')
@@ -168,7 +169,8 @@ def every_column_except_last_three(input_df):
 
 # %%
 """
-10. Készíts egy függvényt, amely tetszőleges oszlopokat és sorokat ad vissza a bemeneti adatokból. A sorokat és oszlopokat listák formájában adjuk be a függvénynek. A sorokat egy bemeneti oszlop alapján szűrjük
+10. Készíts egy függvényt, amely tetszőleges oszlopokat és sorokat ad vissza a bemeneti adatokból. 
+A sorokat és oszlopokat listák formájában adjuk be a függvénynek. A sorokat egy bemeneti oszlop alapján szűrjük
 
 fv. név: sliced_view
 bemenet: input_df, columns_to_keep, column_to_filter, rows_to_keep
