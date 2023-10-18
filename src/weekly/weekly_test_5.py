@@ -37,6 +37,8 @@ def change_price_to_float(input_df):
     return food
 
 
+# ezt itt nem értem, miért nem jó, a notebookban lefut jól..
+
 # %%
 change_price_to_float(food)
 # %%
