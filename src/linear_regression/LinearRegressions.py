@@ -1,31 +1,13 @@
-""" first part """
+"""
+Az órán elhangzott, hogy ne a weekly_test_6 fájlba mentsük a megoldásokat, ezért raktam a df-es részt is ide..
+de akkor most létrehoztam a weekly_test_6-ot, bízom benne, hogy így megfelelő. A notebookban is benne vannak egyébként a megoldásaim.
+Mellesleg nálam lefuttottak a tesztek eddig is minden gond nélkül.
 
-from pathlib import Path
+numpy-t kivettem
+"""
 
-datalib = Path.cwd().parent.joinpath('data')
-import pandas as pd
-import numpy as np
-
-data = pd.read_parquet('/Users/Enci/Documents/GitHub/ECOPY_23241/data/sp500.parquet', engine='fastparquet')
-
-data2 = pd.read_parquet('/Users/Enci/Documents/GitHub/ECOPY_23241/data/ff_factors.parquet', engine='fastparquet')
-
-merge_data = pd.merge(data, data2, on='Date', how='left')
-
-merge_data['Excess Return'] = merge_data['Monthly Returns'] - merge_data['RF']
-
-merge_data = merge_data.sort_values(by=['Symbol', 'Date'])
-merge_data['ex_ret_1'] = merge_data.groupby('Symbol')['Excess Return'].shift(-1)
-
-merge_data = merge_data.dropna(subset=['ex_ret_1'])
-merge_data = merge_data.dropna(subset=['HML'])
-
-amazon = merge_data[merge_data['Symbol'] == 'AMZN']
-amazon = amazon.drop(columns=['Symbol'])
-
-""" second part """
 import statsmodels.api as sm
-
+import pandas as pd
 
 class LinearRegressionSM:
 
@@ -52,12 +34,13 @@ class LinearRegressionSM:
     def get_wald_test_result(self, restriction_matrix):
         wald_test_result = self._model.wald_test(restriction_matrix)
 
-        fvalue = np.round(wald_test_result.statistic[0, 0], 2)
-        pvalue = np.round(wald_test_result.pvalue, 3)
+        fvalue = round(float(wald_test_result.statistic[0, 0]), 2)
+        pvalue = round(float(wald_test_result.pvalue), 3)
 
         result_string = f"F-value: {fvalue}, p-value: {pvalue}"
 
         return result_string
+
 
     def get_model_goodness_values(self):
         r_squared = self._model.rsquared_adj
