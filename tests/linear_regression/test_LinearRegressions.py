@@ -60,6 +60,7 @@ class TestLinearRegressionSM:
         # Assert
         assert result == approx(expected)
 
+
     def test_get_model_goodness_values(self):
         # Arrange
         expected = (
