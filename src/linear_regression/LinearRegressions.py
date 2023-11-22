@@ -157,19 +157,12 @@ class LinearRegressionGLS:
         return f"Centered R-squared: {crs:.3f}, Adjusted R-squared: {ars:.3f}"
 
 
+
+
 class LinearRegressionML:
     def __init__(self, left_hand_side, right_hand_side):
         self.left_hand_side = left_hand_side
         self.right_hand_side = right_hand_side
-
-    def neg_loglikelihood(self, params):
-        X = np.column_stack((np.ones(len(self.right_hand_side)), self.right_hand_side))
-        y = self.left_hand_side
-        betas = params[:-1]
-        sig = params[-1]
-        pred = np.dot(X, betas)
-        likeli = np.sum(norm.logpdf(y, pred, sig))
-        return -likeli
 
     def calculate_res(self, X, y, coefficients):
         return y - np.dot(X, coefficients)
@@ -180,7 +173,7 @@ class LinearRegressionML:
         sigma_squared = np.sum(res ** 2) / (n - k)
         var_beta = np.linalg.inv(X.T @ X) * sigma_squared
         t_statistic = coefficients / np.sqrt(np.diag(var_beta))
-        p_values = 2 * (1 - t.cdf(np.abs(t_statistic), df=n - k))
+        p_values = 2 * (1 - t.cdf(np.abs(t_statistic), df=n-k))
         return p_values
 
     def neg_loglikelihood(self, params):
@@ -188,14 +181,15 @@ class LinearRegressionML:
         y = self.left_hand_side
         b0, b1, b2, b3, sigma_sq = params
         betas = np.array([b0, b1, b2, b3])
-        pred = X @ betas
-        likeli = np.sum(stats.norm.logpdf(y, pred, sigma_sq))
+        p = X @ betas
+        likeli = np.sum(stats.norm.logpdf(y, p, sigma_sq))
 
         return -likeli
 
     def fit(self):
         opt = minimize(self.neg_loglikelihood, np.array([.1, .1, .1, .1, .1]), method='L-BFGS-B')
         b0, b1, b2, b3, sigma_sq = opt.x
+
         self.coefficients = np.array([b0, b1, b2, b3])
         X = np.column_stack((np.ones(len(self.right_hand_side)), self.right_hand_side))
         y = self.left_hand_side
