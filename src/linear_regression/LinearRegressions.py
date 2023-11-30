@@ -107,6 +107,48 @@ class LinearRegressionNP:
         result = f"Centered R-squared: {c_r_squared:.3f}, Adjusted R-squared: {adj_r_squared:.3f}"
         return result
 
+    def get_paired_se_and_percentile_ci(self, number_of_bootstrap_samples, alpha, random_seed=None):
+        np.random.seed(random_seed)
+        betas = []
+        for _ in range(number_of_bootstrap_samples):
+            indices = np.random.choice(len(self.left_hand_side), len(self.left_hand_side), replace=True)
+            X_bs = self.right_hand_side[indices, :]
+            y_bs = self.left_hand_side[indices]
+            beta_bs = np.linalg.inv(X_bs.T @ X_bs) @ X_bs.T @ y_bs
+            betas.append(beta_bs[1])  # Az első nem konstans változó becsült súlya
+
+        paired_se = np.std(betas, ddof=1)
+        lower_bound, upper_bound = np.percentile(betas, [100 * alpha / 2, 100 * (1 - alpha / 2)])
+        result = f"Paired Bootstraped SE: {paired_se:.3f}, CI: [{lower_bound:.3f}, {upper_bound:.3f}]"
+        return result
+
+    def _calculate_residuals(self, X, y, beta):
+        return y - X @ beta
+
+    def get_wild_se_and_normal_ci(self, number_of_bootstrap_samples, alpha, random_seed=None):
+        np.random.seed(random_seed)
+        X = self.right_hand_side
+        y = self.left_hand_side
+        n, k = X.shape
+        beta = self.beta
+        bootstrap_betas = []
+        for _ in range(number_of_bootstrap_samples):
+            indices = np.random.choice(n, size=n, replace=True)
+            bootstrap_X = X[indices, :]
+            bootstrap_y = y[indices]
+            bootstrap_residuals = self._calculate_residuals(bootstrap_X, bootstrap_y, beta) * np.random.normal(0, 1, size=n)
+            bootstrap_y_wild = bootstrap_X @ beta + bootstrap_residuals
+            bootstrap_beta = np.linalg.inv(bootstrap_X.T @ bootstrap_X) @ bootstrap_X.T @ bootstrap_y_wild
+            bootstrap_betas.append(bootstrap_beta[1])
+
+        paired_se = np.std(bootstrap_betas, ddof=1)
+        lower_bound = np.percentile(bootstrap_betas, 100 * alpha / 2)
+        upper_bound = np.percentile(bootstrap_betas, 100 * (1 - alpha / 2))
+
+        result = f'Wild Bootstraped SE: {paired_se:.3f}, CI: [{lower_bound:.3f}, {upper_bound:.3f}]'
+        return result
+
+
 
 class LinearRegressionGLS:
     def __init__(self, left_hand_side, right_hand_side):
